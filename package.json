@@ -1,0 +1,28 @@
+{
+  "name": "my-electron-app",
+  "version": "1.0.2",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^41.0.2",
+    "electron-builder": "^26.8.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/B4CKDOO9/niop4g-sakupljac.git"
+  },
+  "bugs": {
+    "url": "https://github.com/B4CKDOO9/niop4g-sakupljac/issues"
+  },
+  "homepage": "https://github.com/B4CKDOO9/niop4g-sakupljac#readme",
+  "dependencies": {
+    "firebase": "^12.10.0"
+  }
+}

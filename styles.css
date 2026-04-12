@@ -1,0 +1,515 @@
+:root {
+    --dot-size: 30px;
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --menu-bg: #ffffff;
+    --grid-bg: #000000;
+    --cell-bg: #ffffff;
+    --cell-border: #000000;
+    --eliminated-bg: gray;
+    --dialog-overlay: rgba(0, 0, 0, 0.5);
+    --dialog-bg: #ffffff;
+    --timer-color: #333333;
+    --user-bar-color: #555555;
+}
+
+body.dark-mode {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --menu-bg: #121212;
+    --grid-bg: #2c2c2c;
+    --cell-bg: #1e1e1e;
+    --cell-border: #444444;
+    --eliminated-bg: #4a4a4a;
+    --dialog-overlay: rgba(0, 0, 0, 0.8);
+    --dialog-bg: #1e1e1e;
+    --timer-color: #e0e0e0;
+    --user-bar-color: #aaaaaa;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#bg-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+#menu, #auth-screen, #online-lobby {
+    background: transparent !important;
+}
+
+#menu-content, #auth-content, #online-lobby-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* Game header i controls su prozirni — canvas se vidi oko grida */
+#game-header, #game-controls, #turn-timer {
+    position: relative;
+    z-index: 1;
+}
+
+/* Izbornik */
+#menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--menu-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+}
+
+#menu-content {
+    text-align: center;
+}
+
+/* Game Logo */
+.game-logo {
+    font-size: 3.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    background: linear-gradient(45deg, #dc3545, #007bff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    margin-bottom: 36px;
+    letter-spacing: 3px;
+    padding-right: 3px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Menu buttons wrapper */
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Menu buttons */
+.menu-btn {
+    width: 220px;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 0.97rem;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    border: 1.5px solid var(--cell-border);
+    background: var(--cell-bg);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s, border-color 0.18s, transform 0.13s;
+}
+
+.menu-btn:hover {
+    opacity: 1;
+    background: linear-gradient(90deg, #dc3545, #007bff);
+    color: #fff;
+    border-color: transparent;
+    transform: translateY(-2px);
+}
+
+button {
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+    background-color: var(--cell-bg);
+    color: var(--text-color);
+    border: 1px solid var(--cell-border);
+    border-radius: 4px;
+    transition: background-color 0.2s, opacity 0.2s;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+/* Dijalozi */
+.dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--dialog-overlay);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.dialog-content {
+    background: var(--dialog-bg);
+    padding: 32px 36px;
+    border: 1px solid var(--cell-border);
+    border-radius: 12px;
+    min-width: 280px;
+    text-align: left;
+}
+
+.dialog-content h2 {
+    margin: 0 0 20px 0;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.dialog-content input,
+.dialog-content select {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 6px 0 14px 0;
+    padding: 8px 10px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--cell-border);
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+
+.dialog-content label {
+    font-size: 0.88rem;
+    margin-bottom: 2px;
+    display: block;
+}
+
+.dialog-buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.dialog-buttons button {
+    border-radius: 8px;
+    padding: 9px 22px;
+    font-size: 0.92rem;
+}
+
+/* Igra */
+#game-area {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+#game-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.player-info {
+    text-align: center;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 1.5px solid transparent;
+    transition: border-color 0.2s, background 0.2s;
+    min-width: 130px;
+}
+
+.player-info.active-player {
+    border-color: var(--cell-border);
+    background: var(--dialog-bg);
+}
+
+.player-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.player-score {
+    font-size: 1.5rem;
+    font-weight: 900;
+    line-height: 1;
+}
+
+#status {
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.88rem;
+    padding: 6px 14px;
+    min-width: 140px;
+}
+
+/* Grid - dimenzije se postavljaju dinamički JS-om */
+#grid {
+    display: grid;
+    width: 600px;
+    height: 600px;
+    grid-template-columns: repeat(6, 100px);
+    background: var(--grid-bg);
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+#grid>div {
+    outline: 1px solid var(--cell-border);
+    background-color: var(--cell-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+#grid>div.eliminated {
+    background-color: var(--eliminated-bg);
+}
+
+/* Točkice - veličina ovisi o gridu */
+.dot {
+    width: var(--dot-size);
+    height: var(--dot-size);
+    border-radius: 50%;
+}
+
+#game-controls {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Online ekrani (auth i lobby) — hidden by default, JS sets display:flex to show */
+#auth-screen,
+#online-lobby {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-color);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+}
+
+/* Lobby sub-sections — hidden by default, JS toggles them */
+#create-game-options,
+#waiting-room,
+#join-room-form {
+    display: none;
+    margin-top: 12px;
+}
+
+#auth-content,
+#online-lobby-content {
+    text-align: center;
+    width: 400px;
+    isolation: isolate;
+}
+
+#user-bar {
+    font-size: 13px;
+    margin-bottom: 16px;
+    color: var(--user-bar-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+#user-bar button {
+    font-size: 0.8rem;
+    padding: 4px 10px;
+    border-radius: 6px;
+}
+
+/* Turn timer (online mod) */
+#turn-timer {
+    display: none;
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: var(--timer-color);
+}
+
+/* Leaderboard tablica */
+#leaderboard-dialog .dialog-content {
+    min-width: 380px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#leaderboard-list {
+    overflow-y: auto;
+    flex: 1;
+}
+
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    font-size: 0.93rem;
+}
+
+.leaderboard-table thead tr {
+    border-bottom: 2px solid var(--cell-border);
+}
+
+.leaderboard-table th {
+    padding: 8px 12px;
+    text-align: left;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--user-bar-color);
+    font-weight: 600;
+}
+
+.leaderboard-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--cell-border);
+}
+
+.leaderboard-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.leaderboard-table tbody tr:hover {
+    background: rgba(0, 123, 255, 0.06);
+}
+
+.rank-cell {
+    font-weight: 700;
+    width: 32px;
+    color: var(--user-bar-color);
+}
+
+.leaderboard-table .top-1 .rank-cell {
+    color: #f5a623;
+}
+
+.leaderboard-table .top-2 .rank-cell {
+    color: #9b9b9b;
+}
+
+.leaderboard-table .top-3 .rank-cell {
+    color: #c47d3e;
+}
+
+.name-cell {
+    font-weight: 600;
+}
+
+.rating-cell {
+    font-weight: 700;
+    color: #007bff;
+}
+
+.wdl-cell {
+    color: var(--user-bar-color);
+    font-size: 0.88rem;
+}
+
+/* Controls Bar (Language & Theme Toggle) */
+#controls-bar {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 9999;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.control-icon-btn {
+    background: var(--cell-bg);
+    border: 1.5px solid var(--cell-border);
+    border-radius: 8px;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, transform 0.15s, border-color 0.2s;
+}
+
+.control-icon-btn:hover {
+    background: linear-gradient(90deg, #dc3545, #007bff);
+    border-color: transparent;
+    transform: scale(1.08);
+}
+
+.control-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.control-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.lang-text {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    letter-spacing: 0.5px;
+}
+
+@media (max-width: 650px) {
+    #grid {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1;
+        grid-template-columns: repeat(6, 1fr);
+    }
+
+    #grid>div {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1;
+    }
+
+    #game-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    #controls-bar {
+        top: 12px;
+        right: 12px;
+        gap: 8px;
+    }
+
+    .control-icon-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .control-icon {
+        width: 20px;
+        height: 20px;
+    }
+}
