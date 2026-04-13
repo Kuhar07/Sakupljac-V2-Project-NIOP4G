@@ -23,6 +23,6 @@
   },
   "homepage": "https://github.com/B4CKDOO9/niop4g-sakupljac#readme",
   "dependencies": {
-    "firebase": "^12.10.0"
+    "firebase": "^12.12.0"
   }
 }
