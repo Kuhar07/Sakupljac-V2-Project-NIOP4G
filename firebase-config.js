@@ -1,22 +1,25 @@
 // Prevent Firebase from detecting Electron's renderer as a Node.js environment.
 delete window.module;
 
-import { initializeApp }
-  from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
-import { initializeFirestore, persistentLocalCache }
-  from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
-import { getAuth }
-  from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey:            "AIzaSyDQVl0NbQLR9tAVsUaEZa3wjrk6jwD47C0",
-  authDomain:        "niop4g-sakupljac.firebaseapp.com",
-  projectId:         "niop4g-sakupljac",
-  storageBucket:     "niop4g-sakupljac.firebasestorage.app",
-  messagingSenderId: "459725265628",
-  appId:             "1:459725265628:web:1bbbdf3666cf5ad585f219"
+  apiKey: "AIzaSyARc_n26JuSHaY7uKaXbV4uLJ9mZcs7wX4",
+  authDomain: "niop4g-sakupljac-78896.firebaseapp.com",
+  projectId: "niop4g-sakupljac-78896",
+  storageBucket: "niop4g-sakupljac-78896.firebasestorage.app",
+  messagingSenderId: "721532882102",
+  appId: "1:721532882102:web:894d78b0fe6abbba096a17",
+  measurementId: "G-7LY4S64KR6"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
 // persistentLocalCache enables offline support:

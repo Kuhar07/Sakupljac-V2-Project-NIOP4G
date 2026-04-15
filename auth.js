@@ -6,7 +6,7 @@ import {
   onAuthStateChanged
 } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
 
-const GOOGLE_CLIENT_ID = '459725265628-4vv82as21unt637dhpjhch2t6mmev6vt.apps.googleusercontent.com';
+const GOOGLE_CLIENT_ID = '721532882102-7gbg9aefesk2cgo45sd64955d3nepkbm.apps.googleusercontent.com';
 
 const { ipcRenderer } = require('electron');
 
@@ -67,7 +67,7 @@ ipcRenderer.on('oauth-callback', async (_event, callbackUrl) => {
       body: new URLSearchParams({
         code,
         client_id:     GOOGLE_CLIENT_ID,
-        client_secret: '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',
+        client_secret: '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',
         redirect_uri:  currentRedirectUri,
         grant_type:    'authorization_code',
         code_verifier: codeVerifier
